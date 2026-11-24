@@ -1,0 +1,10 @@
+{
+ "node": 1,
+ "profile": "robust",
+ "duplex": "fdd",
+ "f1_mhz": 3300.0,
+ "f2_mhz": 3375.0,
+ "tx_atten": 10.0,
+ "rx_gain": 50.0,
+ "recv_dir": null
+}

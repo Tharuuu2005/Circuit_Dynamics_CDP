@@ -1,0 +1,1329 @@
+options:
+    parameters:
+        author: EN2130 CDP
+        catch_exceptions: 'True'
+        category: '[GRC Hier Blocks]'
+        cmake_opt: ''
+        comment: ''
+        copyright: ''
+        description: ''
+        gen_cmake: 'On'
+        gen_linking: dynamic
+        generate_options: qt_gui
+        hier_block_src_path: '.:'
+        id: sdr_link_phy_bpsk
+        max_nouts: '0'
+        output_language: python
+        placement: (0,0)
+        qt_qss_theme: ''
+        realtime_scheduling: ''
+        run: 'True'
+        run_command: '{python} -u {filename}'
+        run_options: prompt
+        sizing_mode: fixed
+        thread_safe_setters: ''
+        title: SDR Link PHY (optimized, full duplex)
+        window_size: (1000,1000)
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        state: enabled
+blocks:
+-   name: access_code
+    id: variable
+    parameters:
+        comment: ''
+        value: digital.packet_utils.default_access_code
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 200
+        - 80
+        state: enabled
+-   name: amp
+    id: variable
+    parameters:
+        comment: ''
+        value: 0.6 / max([abs(c) for c in constel.points()])
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 390
+        - 150
+        state: enabled
+-   name: constel
+    id: variable
+    parameters:
+        comment: ''
+        value: digital.constellation_bpsk().base()
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 1340
+        - 10
+        state: enabled
+-   name: duplex
+    id: variable
+    parameters:
+        comment: ''
+        value: '''fdd'''
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 390
+        - 10
+        state: enabled
+-   name: f1
+    id: variable
+    parameters:
+        comment: ''
+        value: '3300000000'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 580
+        - 10
+        state: enabled
+-   name: f2
+    id: variable
+    parameters:
+        comment: ''
+        value: '3375000000'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 770
+        - 10
+        state: enabled
+-   name: node
+    id: variable
+    parameters:
+        comment: ''
+        value: '1'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 200
+        - 10
+        state: enabled
+-   name: rf_bw
+    id: variable
+    parameters:
+        comment: ''
+        value: int(min(max(1.5 * 1.35 * samp_rate / sps, 1e6), samp_rate))
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 200
+        - 150
+        state: enabled
+-   name: rrc_rx_taps
+    id: variable
+    parameters:
+        comment: ''
+        value: firdes.root_raised_cosine(1.0, samp_rate, samp_rate / sps, 0.35, 11
+            * sps)
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 770
+        - 150
+        state: enabled
+-   name: rrc_tx_taps
+    id: variable
+    parameters:
+        comment: ''
+        value: firdes.root_raised_cosine(sps, sps, 1.0, 0.35, 11 * sps + 1)
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 580
+        - 150
+        state: enabled
+-   name: rx_freq
+    id: variable
+    parameters:
+        comment: ''
+        value: f2 if node == 1 else f1
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 580
+        - 80
+        state: enabled
+-   name: rx_port
+    id: variable
+    parameters:
+        comment: ''
+        value: '52002'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 1150
+        - 80
+        state: enabled
+-   name: samp_rate
+    id: variable
+    parameters:
+        comment: ''
+        value: '4000000'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 960
+        - 10
+        state: enabled
+-   name: sps
+    id: variable
+    parameters:
+        comment: ''
+        value: '4'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 1150
+        - 10
+        state: enabled
+-   name: tx_atten
+    id: variable
+    parameters:
+        comment: ''
+        value: '10'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 1340
+        - 80
+        state: enabled
+-   name: tx_freq
+    id: variable
+    parameters:
+        comment: ''
+        value: f1 if node == 1 else f2
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 390
+        - 80
+        state: enabled
+-   name: tx_port
+    id: variable
+    parameters:
+        comment: ''
+        value: '52001'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 960
+        - 80
+        state: enabled
+-   name: uri
+    id: variable
+    parameters:
+        comment: ''
+        value: '''ip:192.168.1.10'''
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 770
+        - 80
+        state: enabled
+-   name: agc
+    id: blocks_multiply_const_vxx
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        const: '0.56'
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        type: complex
+        vlen: '1'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 1060
+        - 740
+        state: enabled
+-   name: agc_avg
+    id: blocks_moving_average_xx
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        length: '512'
+        max_iter: '4096'
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        scale: 1.0 / 512
+        type: float
+        vlen: '1'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 380
+        - 640
+        state: enabled
+-   name: agc_delay
+    id: blocks_delay
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        delay: '256'
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        num_ports: '1'
+        showports: 'False'
+        type: complex
+        vlen: '1'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 200
+        - 700
+        state: enabled
+-   name: agc_div
+    id: blocks_divide_xx
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        num_inputs: '2'
+        type: complex
+        vlen: '1'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 1060
+        - 660
+        state: enabled
+-   name: agc_eps
+    id: blocks_add_const_vxx
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        const: 1e-20
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        type: float
+        vlen: '1'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 580
+        - 640
+        state: enabled
+-   name: agc_f2c
+    id: blocks_float_to_complex
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        vlen: '1'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 900
+        - 640
+        state: enabled
+-   name: agc_pow
+    id: blocks_complex_to_mag_squared
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        vlen: '1'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 200
+        - 640
+        state: enabled
+-   name: agc_sqrt
+    id: blocks_transcendental
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        name: '''sqrt'''
+        type: float
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 740
+        - 640
+        state: enabled
+-   name: c2s
+    id: digital_chunks_to_symbols_xx
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        dimension: '1'
+        in_type: byte
+        maxoutbuf: '4096'
+        minoutbuf: '0'
+        num_ports: '1'
+        out_type: complex
+        symbol_table: list(constel.points()) + [0]
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 520
+        - 300
+        state: enabled
+-   name: corr
+    id: digital_correlate_access_code_xx_ts
+    parameters:
+        access_code: access_code
+        affinity: ''
+        alias: ''
+        comment: ''
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        tagname: '''packet_len'''
+        threshold: '3'
+        type: byte
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 760
+        - 750
+        state: enabled
+-   name: costas
+    id: digital_costas_loop_cc
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        order: '2'
+        use_snr: 'False'
+        w: '0.02'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 930
+        - 580
+        state: enabled
+-   name: crc_check
+    id: digital_crc32_bb
+    parameters:
+        affinity: ''
+        alias: ''
+        check: 'True'
+        comment: ''
+        lengthtagname: '''packet_len'''
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        packed: 'True'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 480
+        - 900
+        state: enabled
+-   name: decoder
+    id: digital_constellation_decoder_cb
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        constellation: constel
+        maxoutbuf: '0'
+        minoutbuf: '0'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 10
+        - 760
+        state: enabled
+-   name: descrambler
+    id: digital_additive_scrambler_bb
+    parameters:
+        affinity: ''
+        alias: ''
+        bits_per_byte: '8'
+        comment: ''
+        count: '0'
+        len: '7'
+        mask: '0x8A'
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        reset_tag_key: '''packet_len'''
+        seed: '0x7F'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 240
+        - 900
+        state: enabled
+-   name: diff_dec
+    id: digital_diff_decoder_bb
+    parameters:
+        affinity: ''
+        alias: ''
+        coding: digital.DIFF_DIFFERENTIAL
+        comment: ''
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        modulus: '2'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 220
+        - 760
+        state: enabled
+-   name: framer
+    id: epy_block
+    parameters:
+        _source_code: "r\"\"\"\nContinuous-stream PDU framer for GNU Radio (TX side).\n\
+            \nReplaces this chain from the original flowgraph:\n    PDU to Tagged\
+            \ Stream -> Stream CRC32 -> Protocol Formatter -> Tagged Stream Mux\n\
+            \    (+ preamble/postamble Vector Sources + Stream to Tagged Stream x2)\
+            \ -> Tag Gate\nand the first half of the Constellation Modulator (unpack\
+            \ bits -> Gray map ->\ndifferential encode). Output = differentially encoded\
+            \ SYMBOL INDICES, followed in the\nflowgraph by \"Chunks to Symbols\"\
+            \ -> RRC \"Polyphase Arbitrary Resampler\" -> gain.\n\nWhy symbols and\
+            \ not bytes: GNU Radio buffers are sized in ITEMS. One byte at a framer\n\
+            output is 32 samples of airtime (BPSK, sps=4) so a 4096-byte buffer alone\
+            \ delays every\nframe by 131k samples; a symbol is only 4 samples. Measured\
+            \ one-way TX latency at\n1 Msps went from ~700 ms (byte framer + Constellation\
+            \ Modulator) to a few ms.\n\nWhy:\n  1. The PlutoSDR Sink only pushes\
+            \ a buffer to the radio when it is FULL. With bursty\n     tagged-stream\
+            \ TX, the last packet of a burst sits in a half-full buffer until the\n\
+            \     next packet arrives -> ACKs/last chunks get \"stuck\" -> spurious\
+            \ ARQ timeouts.\n     This block NEVER starves: when there is no packet\
+            \ to send it emits idle bytes,\n     so the radio transmits continuously\
+            \ and every packet leaves immediately.\n  2. Continuous TX keeps the receiver's\
+            \ Symbol Sync and Costas loop locked all the\n     time, so a 1024-byte\
+            \ preamble is no longer needed (it was ~60% of airtime).\n  3. Downstream\
+            \ back-pressure from the PlutoSDR Sink paces this block at exactly the\n\
+            \     air rate - no time.sleep() pacing tricks are needed for the radio.\n\
+            \nFrame format (bit-exact with the stock RX blocks\n\"Correlate Access\
+            \ Code - Tag Stream\" + \"Stream CRC32 (check, packed)\"):\n\n    [preamble\
+            \ 0x55..] [access code 8B] [len 2B BE] [len 2B BE] [payload] [CRC32 4B\
+            \ LE] [postamble]\n                                        ^^^^^^^^^^^^^^^^^^^^^^\
+            \ len = len(payload)+4\n                                             \
+            \                  \\_____ whitened _____/\n\nWhitening: payload+CRC are\
+            \ XORed with the keystream of GNU Radio's\n\"Additive Scrambler\" (mask\
+            \ 0x8A, seed 0x7F, length 7, 8 bits/byte, reset on every\npacket). Without\
+            \ it, long runs of identical bytes (WAV silence, flat image areas,\nzero\
+            \ padding) give the receiver's Symbol Sync / Costas loop no transitions;\
+            \ those\nframes then fail CRC on EVERY retry and ARQ cannot recover. The\
+            \ RX flowgraph undoes it\nwith an Additive Scrambler block (same params,\
+            \ Reset Tag Key = packet_len) placed\nbetween Repack Bits and Stream CRC32.\n\
+            \nQuiet FDD (idle_silence=True with burst_preamble_len): the radio keeps\
+            \ sending idle symbols\nfor `hangover` symbols after a DATA frame (none\
+            \ after an ACK / beacon) (so back-to-back frames need only the short preamble),\n\
+            then goes SILENT. A frame that starts after silence gets the long burst\
+            \ preamble so the far\nreceiver's AGC / Symbol Sync / Costas re-lock.\
+            \ Why: an E200 whose own continuous\ntransmitter desensitises its receiver\
+            \ is deaf all the time in continuous FDD (the direction\nINTO that radio\
+            \ crawls), but only during its own short ACK bursts in quiet FDD.\n\n\
+            Priority: frames whose first two bytes are (MAGIC, type != DATA) - i.e.\
+            \ ARQ ACKs and\nbeacons from transport.py - jump ahead of queued DATA\
+            \ frames. This keeps ACK latency\nlow even when this node is simultaneously\
+            \ sending a large file (full duplex).\n\"\"\"\nimport collections\nimport\
+            \ struct\nimport zlib\n\nimport numpy as np\nimport pmt\nfrom gnuradio\
+            \ import gr\n\nDEFAULT_ACCESS_CODE = \"1010110011011101101001001110001011110010100011000010000011111100\"\
+            \n\nSCRAMBLER_MASK, SCRAMBLER_SEED, SCRAMBLER_LEN = 0x8A, 0x7F, 7\n\n\n\
+            def scrambler_keystream(n, mask=SCRAMBLER_MASK, seed=SCRAMBLER_SEED, reg_len=SCRAMBLER_LEN):\n\
+            \    \"\"\"Byte keystream identical to digital.additive_scrambler_bb(mask,\
+            \ seed, len, 0, 8).\"\"\"\n    sr, out = seed, bytearray()\n    for _\
+            \ in range(n):\n        b = 0\n        for i in range(8):\n          \
+            \  b |= (sr & 1) << i\n            newbit = bin(sr & mask).count(\"1\"\
+            ) & 1\n            sr = (sr >> 1) | (newbit << reg_len)\n        out.append(b)\n\
+            \    return np.frombuffer(bytes(out), dtype=np.uint8)\n\n\n# Must match\
+            \ transport.py\nMAGIC = 0xA5\nTYPE_DATA = 0x01\n\n\nclass blk(gr.sync_block):\n\
+            \    \"\"\"PDU Framer (continuous). Message input 'in' (PDU of uint8),\
+            \ byte stream output.\"\"\"\n\n    def __init__(self, access_code=DEFAULT_ACCESS_CODE,\
+            \ preamble_len=4, postamble_len=2,\n                 max_queue=2048, idle_seed=1234,\
+            \ bits_per_symbol=1, pre_diff_code=(),\n                 idle_silence=False,\
+            \ burst_preamble_len=0, hangover=0):\n        gr.sync_block.__init__(self,\
+            \ name=\"PDU Framer (continuous)\",\n                               in_sig=None,\
+            \ out_sig=[np.uint8])\n        self.message_port_register_in(pmt.intern(\"\
+            in\"))\n        self.set_msg_handler(pmt.intern(\"in\"), self._on_pdu)\n\
+            \n        ac_int = int(access_code, 2)\n        self._ac = ac_int.to_bytes(len(access_code)\
+            \ // 8, \"big\")\n        self._pre = b\"\\x55\" * int(preamble_len)\n\
+            \        self._post = b\"\\x55\" * int(postamble_len)\n        self._max_queue\
+            \ = int(max_queue)\n        self._ks = scrambler_keystream(0x1000)\n \
+            \       self._q_hi = collections.deque()   # ACK / control\n        self._q_lo\
+            \ = collections.deque()   # DATA\n        self._cur = np.zeros(0, dtype=np.uint8)\n\
+            \        self._pos = 0\n        # Pseudo-random idle fill: keeps plenty\
+            \ of symbol transitions for timing\n        # recovery and a flat spectrum.\
+            \ A false access-code match inside idle data is\n        # rejected by\
+            \ the duplicated length field + CRC32.\n        self._k = int(bits_per_symbol)\n\
+            \        self._M = 1 << self._k\n        # TDD mode: between frames output\
+            \ symbol index M, which the flowgraph's\n        # Chunks to Symbols table\
+            \ maps to 0+0j -> the radio is SILENT when it has\n        # nothing to\
+            \ send (no self-interference into its own receiver), while the\n     \
+            \   # sample stream to the PlutoSDR Sink stays continuous (no stuck buffers).\n\
+            \        self._silence = bool(idle_silence)\n        self.SILENCE = self._M\n\
+            \        # quiet FDD: idle symbols for `hangover` symbols after a frame,\
+            \ then silence; a frame\n        # starting after silence is preceded\
+            \ by extra preamble (burst_preamble_len in total)\n        extra = max(0,\
+            \ int(burst_preamble_len) - int(preamble_len)) if idle_silence else 0\n\
+            \        self._hang = int(hangover) if extra else 0\n        self._idle_n\
+            \ = 0\n        self._quiet = True              # nothing transmitted yet\n\
+            \        self._after_data = False        # hangover only after DATA (an\
+            \ ACK goes silent at once)\n        self.bursts = 0\n        code = list(pre_diff_code)\
+            \ if len(pre_diff_code) else list(range(self._M))\n        self._map =\
+            \ np.array(code, dtype=np.uint8)\n        self._weights = (1 << np.arange(self._k\
+            \ - 1, -1, -1)).astype(np.uint8)\n        # Burst preamble: 0x55 then\
+            \ FIXED pseudo-random bytes. After differential encoding a long\n    \
+            \    # 0x55 run is a periodic ++--++-- pattern on which the symbol-timing\
+            \ loop can settle half a\n        # symbol off; random symbols have no\
+            \ such false lock point (simulation: frames sent alone\n        # after\
+            \ silence decode ~80% instead of ~50%).\n        if extra:\n         \
+            \   rnd = np.random.default_rng(20260).integers(0, 256, max(0, extra -\
+            \ 4), dtype=np.uint8).tobytes()\n            self._extra_pre = self._to_chunks((b\"\
+            \\x55\" * 4 + rnd)[:extra])\n        else:\n            self._extra_pre\
+            \ = None\n        self._diff_state = 0\n        rng = np.random.default_rng(int(idle_seed))\n\
+            \        self._idle = rng.integers(0, self._M, 1 << 16, dtype=np.uint8)\n\
+            \        self._idle_pos = 0\n        self.dropped = 0\n        self.sent\
+            \ = 0\n        # Keep the byte buffer after this block small so a newly\
+            \ queued frame does not\n        # wait behind a large backlog of idle\
+            \ bytes (lower RTT for the ARQ).\n        try:\n            self.set_max_output_buffer(0,\
+            \ 4096)\n        except Exception:\n            pass\n\n    def _to_chunks(self,\
+            \ b):\n        \"\"\"bytes -> k-bit symbol values, MSB first (same as\
+            \ Packed to Unpacked, MSB).\"\"\"\n        bits = np.unpackbits(np.frombuffer(b,\
+            \ dtype=np.uint8) if isinstance(b, bytes) else b)\n        if self._k\
+            \ == 1:\n            return bits\n        return (bits.reshape(-1, self._k)\
+            \ * self._weights).sum(axis=1).astype(np.uint8)\n\n    # ------------------------------------------------------------------\
+            \ messages\n    def _on_pdu(self, msg):\n        if not pmt.is_pair(msg):\n\
+            \            return\n        vec = pmt.cdr(msg)\n        if not pmt.is_u8vector(vec):\n\
+            \            return\n        payload = bytes(pmt.u8vector_elements(vec))\n\
+            \        n = len(payload)\n        if n == 0 or n + 4 > 0x0FFF:\n    \
+            \        return\n        ln = struct.pack(\">H\", n + 4)\n        body\
+            \ = np.frombuffer(payload + struct.pack(\"<I\", zlib.crc32(payload) &\
+            \ 0xFFFFFFFF),\n                             dtype=np.uint8) ^ self._ks[:n\
+            \ + 4]\n        arr = self._to_chunks(np.concatenate((\n            np.frombuffer(self._pre\
+            \ + self._ac + ln + ln, dtype=np.uint8),\n            body, np.frombuffer(self._post,\
+            \ dtype=np.uint8))))\n        is_ctrl = n >= 2 and payload[0] == MAGIC\
+            \ and payload[1] != TYPE_DATA\n        q = self._q_hi if is_ctrl else\
+            \ self._q_lo\n        if len(q) >= self._max_queue:\n            self.dropped\
+            \ += 1          # ARQ will recover it\n            return\n        q.append(arr)\n\
+            \n    def _next_frame(self):\n        if self._q_hi:\n            self._after_data\
+            \ = False\n            return self._q_hi.popleft()\n        if self._q_lo:\n\
+            \            self._after_data = True\n            return self._q_lo.popleft()\n\
+            \        return None\n\n    # ------------------------------------------------------------------\
+            \ stream\n    def work(self, input_items, output_items):\n        out\
+            \ = output_items[0]\n        n = len(out)\n        i = 0\n        while\
+            \ i < n:\n            if self._pos >= len(self._cur):\n              \
+            \  f = self._next_frame()\n                if f is None:\n           \
+            \         break\n                if self._extra_pre is not None and self._quiet:\
+            \   # first frame after silence\n                    f = np.concatenate((self._extra_pre,\
+            \ f))\n                    self.bursts += 1\n                self._quiet,\
+            \ self._idle_n = False, 0\n                self._cur, self._pos = f, 0\n\
+            \                self.sent += 1\n            take = min(n - i, len(self._cur)\
+            \ - self._pos)\n            out[i:i + take] = self._cur[self._pos:self._pos\
+            \ + take]\n            i += take\n            self._pos += take\n    \
+            \    n_data = i\n        if i < n:\n            take = min(n - i, 512)\n\
+            \            hang = min(take, max(0, self._hang - self._idle_n)) if self._silence\
+            \ and self._after_data else 0\n            if hang:            # quiet\
+            \ FDD hangover: idle symbols, then silence\n                idx = (self._idle_pos\
+            \ + np.arange(hang)) & 0xFFFF\n                out[i:i + hang] = self._idle[idx]\n\
+            \                self._idle_pos = (self._idle_pos + hang) & 0xFFFF\n \
+            \               self._idle_n += hang\n                n_data = i + hang\n\
+            \                i += hang\n                take -= hang\n           \
+            \ if take <= 0:\n                pass\n            elif self._silence:\n\
+            \                out[i:i + take] = self.SILENCE\n                self._quiet\
+            \ = True\n            else:\n                # Idle fill (random symbols):\
+            \ keeps the radio transmitting continuously\n                # so every\
+            \ frame leaves immediately and the RX loops stay locked.\n           \
+            \     idx = (self._idle_pos + np.arange(take)) & 0xFFFF\n            \
+            \    out[i:i + take] = self._idle[idx]\n                n_data = i + take\n\
+            \            i += take\n        if n_data:\n            # Gray pre-diff\
+            \ map + differential encoding: y[n] = (x[n] + y[n-1]) mod M\n        \
+            \    seg = self._map[out[:n_data]].astype(np.int64)\n            seg[0]\
+            \ += self._diff_state\n            enc = np.cumsum(seg) % self._M\n  \
+            \          out[:n_data] = enc\n            self._diff_state = int(enc[-1])\n\
+            \        return i\n"
+        access_code: access_code
+        affinity: ''
+        alias: ''
+        bits_per_symbol: '1'
+        burst_preamble_len: 128 if duplex == 'fdd' else 0
+        comment: ''
+        hangover: 2048 if duplex == 'fdd' else 0
+        idle_seed: '1234'
+        idle_silence: duplex != 'fdd-cont'
+        max_queue: '2048'
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        postamble_len: '2'
+        pre_diff_code: '[]'
+        preamble_len: 64 if duplex == 'tdd' else 4
+    states:
+        _io_cache: ('PDU Framer (continuous)', 'blk', [('access_code', "'1010110011011101101001001110001011110010100011000010000011111100'"),
+            ('preamble_len', '4'), ('postamble_len', '2'), ('max_queue', '2048'),
+            ('idle_seed', '1234'), ('bits_per_symbol', '1'), ('pre_diff_code', '()'),
+            ('idle_silence', 'False'), ('burst_preamble_len', '0'), ('hangover', '0')],
+            [('in', 'message', 1)], [('0', 'byte', 1)], "PDU Framer (continuous).
+            Message input 'in' (PDU of uint8), byte stream output.", [])
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 230
+        - 300
+        state: enabled
+-   name: note_gui
+    id: note
+    parameters:
+        alias: ''
+        comment: ''
+        note: 'QT sinks cost CPU: disable them (select + D) if GNU Radio prints U/O
+            at 10 Msps'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 1150
+        - 760
+        state: enabled
+-   name: note_rx
+    id: note
+    parameters:
+        alias: ''
+        comment: ''
+        note: 'RX: Pluto -> look-ahead AGC (C++ blocks) -> RRC -> Symbol Sync -> Costas
+            -> Decoder -> Diff Dec -> Map -> Unpack -> Correlate AC -> Repack (MSB)
+            -> Descramble -> CRC32 check -> PDU'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 10
+        - 520
+        state: enabled
+-   name: note_tx
+    id: note
+    parameters:
+        alias: ''
+        comment: ''
+        note: 'TX: Socket PDU -> Framer (framing+CRC+whitening+Gray+diff-enc, emits
+            symbols; index M = silence when idle in fdd / tdd) -> Chunks to Symbols
+            (+0j entry) -> RRC x sps -> gain -> Pluto'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 10
+        - 260
+        state: enabled
+-   name: note_vars
+    id: note
+    parameters:
+        alias: ''
+        comment: ''
+        note: 'node = 1 or 2 (node 1 TX f1 / RX f2, node 2 the opposite). duplex =
+            ''fdd'' (default: silent when idle), ''fdd-cont'' (idle symbols all the
+            time) or ''tdd''; must match app.py --duplex. f1 / f2 must match the app''s
+            F1 / F2. samp_rate 4000000 + sps 4 = --profile robust, 2000000 + sps 2
+            = lean, 10000000 + sps 4 = balanced'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 10
+        - 100
+        state: enabled
+-   name: pluto_sink
+    id: iio_pluto_sink
+    parameters:
+        affinity: ''
+        alias: ''
+        attenuation1: tx_atten
+        bandwidth: rf_bw
+        buffer_size: '32768'
+        comment: ''
+        cyclic: 'False'
+        filter: ''
+        filter_source: '''Auto'''
+        fpass: '0'
+        frequency: int(tx_freq)
+        fstop: '0'
+        len_tag_key: ''''''
+        samplerate: int(samp_rate)
+        type: fc32
+        uri: uri
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 1150
+        - 280
+        state: enabled
+-   name: pluto_source
+    id: iio_pluto_source
+    parameters:
+        affinity: ''
+        alias: ''
+        bandwidth: rf_bw
+        bbdc: 'True'
+        buffer_size: '32768'
+        comment: ''
+        filter: ''
+        filter_source: '''Auto'''
+        fpass: '0'
+        frequency: int(rx_freq)
+        fstop: '0'
+        gain1: '''manual'''
+        len_tag_key: ''''''
+        manual_gain1: '50'
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        quadrature: 'True'
+        rfdc: 'True'
+        samplerate: int(samp_rate)
+        type: fc32
+        uri: uri
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 10
+        - 560
+        state: enabled
+-   name: repack
+    id: blocks_repack_bits_bb
+    parameters:
+        affinity: ''
+        alias: ''
+        align_output: 'False'
+        comment: ''
+        endianness: gr.GR_MSB_FIRST
+        k: '1'
+        l: '8'
+        len_tag_key: '''packet_len'''
+        maxoutbuf: '0'
+        minoutbuf: '0'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 10
+        - 900
+        state: enabled
+-   name: rrc_rx
+    id: fft_filter_xxx
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        decim: '1'
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        nthreads: '1'
+        samp_delay: '0'
+        taps: rrc_rx_taps
+        type: ccc
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 460
+        - 580
+        state: enabled
+-   name: rrc_tx
+    id: interp_fir_filter_xxx
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        interp: sps
+        maxoutbuf: '4096'
+        minoutbuf: '0'
+        samp_delay: '0'
+        taps: rrc_tx_taps
+        type: ccf
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 740
+        - 300
+        state: enabled
+-   name: rx_constellation
+    id: qtgui_const_sink_x
+    parameters:
+        affinity: ''
+        alias: ''
+        alpha1: '1.0'
+        alpha10: '1.0'
+        alpha2: '1.0'
+        alpha3: '1.0'
+        alpha4: '1.0'
+        alpha5: '1.0'
+        alpha6: '1.0'
+        alpha7: '1.0'
+        alpha8: '1.0'
+        alpha9: '1.0'
+        autoscale: 'False'
+        axislabels: 'True'
+        color1: '"blue"'
+        color10: '"dark blue"'
+        color2: '"red"'
+        color3: '"green"'
+        color4: '"black"'
+        color5: '"cyan"'
+        color6: '"magenta"'
+        color7: '"yellow"'
+        color8: '"dark red"'
+        color9: '"dark green"'
+        comment: ''
+        grid: 'False'
+        gui_hint: ''
+        label1: ''
+        label10: ''
+        label2: ''
+        label3: ''
+        label4: ''
+        label5: ''
+        label6: ''
+        label7: ''
+        label8: ''
+        label9: ''
+        legend: 'True'
+        marker1: '0'
+        marker10: '0'
+        marker2: '0'
+        marker3: '0'
+        marker4: '0'
+        marker5: '0'
+        marker6: '0'
+        marker7: '0'
+        marker8: '0'
+        marker9: '0'
+        name: '''Recovered symbols'''
+        nconnections: '1'
+        size: '1024'
+        style1: '0'
+        style10: '0'
+        style2: '0'
+        style3: '0'
+        style4: '0'
+        style5: '0'
+        style6: '0'
+        style7: '0'
+        style8: '0'
+        style9: '0'
+        tr_chan: '0'
+        tr_level: '0.0'
+        tr_mode: qtgui.TRIG_MODE_FREE
+        tr_slope: qtgui.TRIG_SLOPE_POS
+        tr_tag: '""'
+        type: complex
+        update_time: '0.2'
+        width1: '1'
+        width10: '1'
+        width2: '1'
+        width3: '1'
+        width4: '1'
+        width5: '1'
+        width6: '1'
+        width7: '1'
+        width8: '1'
+        width9: '1'
+        xmax: '2'
+        xmin: '-2'
+        ymax: '2'
+        ymin: '-2'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 1150
+        - 600
+        state: enabled
+-   name: rx_socket
+    id: network_socket_pdu
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        host: 127.0.0.1
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        mtu: '2048'
+        port: str(rx_port)
+        tcp_no_delay: 'False'
+        type: UDP_CLIENT
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 900
+        - 900
+        state: enabled
+-   name: rx_spectrum
+    id: qtgui_freq_sink_x
+    parameters:
+        affinity: ''
+        alias: ''
+        alpha1: '1.0'
+        alpha10: '1.0'
+        alpha2: '1.0'
+        alpha3: '1.0'
+        alpha4: '1.0'
+        alpha5: '1.0'
+        alpha6: '1.0'
+        alpha7: '1.0'
+        alpha8: '1.0'
+        alpha9: '1.0'
+        autoscale: 'False'
+        average: '1.0'
+        axislabels: 'True'
+        bw: samp_rate
+        color1: '"blue"'
+        color10: '"dark blue"'
+        color2: '"red"'
+        color3: '"green"'
+        color4: '"black"'
+        color5: '"cyan"'
+        color6: '"magenta"'
+        color7: '"yellow"'
+        color8: '"dark red"'
+        color9: '"dark green"'
+        comment: ''
+        ctrlpanel: 'False'
+        fc: rx_freq
+        fftsize: '1024'
+        freqhalf: 'True'
+        grid: 'False'
+        gui_hint: ''
+        label: Relative Gain
+        label1: ''
+        label10: ''''''
+        label2: ''''''
+        label3: ''''''
+        label4: ''''''
+        label5: ''''''
+        label6: ''''''
+        label7: ''''''
+        label8: ''''''
+        label9: ''''''
+        legend: 'True'
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        name: '''RX spectrum'''
+        nconnections: '1'
+        norm_window: 'False'
+        showports: 'False'
+        tr_chan: '0'
+        tr_level: '0.0'
+        tr_mode: qtgui.TRIG_MODE_FREE
+        tr_tag: '""'
+        type: complex
+        units: dB
+        update_time: '0.2'
+        width1: '1'
+        width10: '1'
+        width2: '1'
+        width3: '1'
+        width4: '1'
+        width5: '1'
+        width6: '1'
+        width7: '1'
+        width8: '1'
+        width9: '1'
+        wintype: window.WIN_BLACKMAN_hARRIS
+        ymax: '10'
+        ymin: '-140'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 260
+        - 460
+        state: enabled
+-   name: symbol_sync
+    id: digital_symbol_sync_xx
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        constellation: constel
+        damping: '1.0'
+        loop_bw: '0.01'
+        max_dev: '1.5'
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        nfilters: '128'
+        osps: '1'
+        pfb_mf_taps: '[]'
+        resamp_type: digital.IR_MMSE_8TAP
+        sps: sps
+        ted_gain: '1.0'
+        ted_type: digital.TED_SIGNAL_TIMES_SLOPE_ML
+        type: cc
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 660
+        - 560
+        state: enabled
+-   name: to_pdu
+    id: pdu_tagged_stream_to_pdu
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        tag: packet_len
+        type: byte
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 680
+        - 900
+        state: enabled
+-   name: tx_gain
+    id: blocks_multiply_const_vxx
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        const: amp
+        maxoutbuf: '4096'
+        minoutbuf: '0'
+        type: complex
+        vlen: '1'
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 960
+        - 300
+        state: enabled
+-   name: tx_socket
+    id: network_socket_pdu
+    parameters:
+        affinity: ''
+        alias: ''
+        comment: ''
+        host: 127.0.0.1
+        maxoutbuf: '0'
+        minoutbuf: '0'
+        mtu: '2048'
+        port: str(tx_port)
+        tcp_no_delay: 'False'
+        type: UDP_SERVER
+    states:
+        bus_sink: false
+        bus_source: false
+        bus_structure: null
+        coordinate:
+        - 10
+        - 300
+        state: enabled
+connections:
+-   - agc
+    - '0'
+    - rrc_rx
+    - '0'
+-   - agc_avg
+    - '0'
+    - agc_eps
+    - '0'
+-   - agc_delay
+    - '0'
+    - agc_div
+    - '0'
+-   - agc_div
+    - '0'
+    - agc
+    - '0'
+-   - agc_eps
+    - '0'
+    - agc_sqrt
+    - '0'
+-   - agc_f2c
+    - '0'
+    - agc_div
+    - '1'
+-   - agc_pow
+    - '0'
+    - agc_avg
+    - '0'
+-   - agc_sqrt
+    - '0'
+    - agc_f2c
+    - '0'
+-   - c2s
+    - '0'
+    - rrc_tx
+    - '0'
+-   - corr
+    - '0'
+    - repack
+    - '0'
+-   - costas
+    - '0'
+    - decoder
+    - '0'
+-   - costas
+    - '0'
+    - rx_constellation
+    - '0'
+-   - crc_check
+    - '0'
+    - to_pdu
+    - '0'
+-   - decoder
+    - '0'
+    - diff_dec
+    - '0'
+-   - descrambler
+    - '0'
+    - crc_check
+    - '0'
+-   - diff_dec
+    - '0'
+    - corr
+    - '0'
+-   - framer
+    - '0'
+    - c2s
+    - '0'
+-   - pluto_source
+    - '0'
+    - agc_delay
+    - '0'
+-   - pluto_source
+    - '0'
+    - agc_pow
+    - '0'
+-   - pluto_source
+    - '0'
+    - rx_spectrum
+    - '0'
+-   - repack
+    - '0'
+    - descrambler
+    - '0'
+-   - rrc_rx
+    - '0'
+    - symbol_sync
+    - '0'
+-   - rrc_tx
+    - '0'
+    - tx_gain
+    - '0'
+-   - symbol_sync
+    - '0'
+    - costas
+    - '0'
+-   - to_pdu
+    - pdus
+    - rx_socket
+    - pdus
+-   - tx_gain
+    - '0'
+    - pluto_sink
+    - '0'
+-   - tx_socket
+    - pdus
+    - framer
+    - in
+metadata:
+    file_format: 1
+    grc_version: 3.10.9.2
